@@ -1,0 +1,28 @@
+{
+  "name": "pdbparse",
+  "version": "1.0.0",
+  "description": "parse and filter pdbedit -L -v output",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "luc.deschenaux@freesurf.ch",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "minimist": "^1.2.7"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luxigo/pdbparse.git"
+  },
+  "keywords": [
+    "pdbedit",
+    "parser"
+  ],
+  "bugs": {
+    "url": "https://github.com/luxigo/pdbparse/issues"
+  },
+  "homepage": "https://github.com/luxigo/pdbparse#readme"
+}
