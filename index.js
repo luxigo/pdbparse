@@ -19,6 +19,9 @@
 
 "use strict";
 
+var fs=require('fs');
+var path=require('path');
+
 function parse(stream,filter) {
 
   return new Promise((resolve,reject) => {
@@ -63,13 +66,14 @@ function main(){
   const minimist = require('minimist');
   const options= {
     string: ['filter'],
-    boolean: ['help','usernames','disabled','active'],
+    boolean: ['help','usernames','disabled','active','version'],
     alias: {
       h: 'help',
       f: 'filter',
       u: 'usernames',
       d: 'disabled',
-      a: 'active'
+      a: 'active',
+      v: 'version'
     }
   }
 
@@ -81,6 +85,10 @@ function main(){
     help();
   }
 
+  if (args.version) {
+    version();
+  }
+
   if (args.disabled) {
     if (args.active||args.filter) throw "mutually exclusive: filter, active, disabled"
     args.filter='return user.account_flags.match(/D/)';
@@ -90,7 +98,7 @@ function main(){
     args.filter='return !user.account_flags.match(/D/)';
   }
   if (args.filter) {
-      filter=Function('user',args.filter);
+    filter=Function('user',args.filter);
   }
 
   if (args._) {
@@ -98,15 +106,19 @@ function main(){
   }
 
   return parse(stream,filter)
-  .then((list) => {
-    if (args.usernames) {
-      list.forEach(function(user){
-        console.log(user.unix_username);
-      })
-    } else {
-      console.log(JSON.stringify(list,false,4));
-    }
-  });
+    .then((list) => {
+      if (fromCommandLine){
+        if (args.usernames) {
+          list.forEach(function(user){
+            console.log(user.unix_username);
+          })
+        } else {
+          console.log(JSON.stringify(list,false,4));
+        }
+      } else {
+        return list;
+      }
+    });
 }
 
 function help() {
@@ -115,9 +127,18 @@ function help() {
   process.exit(1);
 }
 
+function version(){
+  var pkg=require(path.resolve(__dirname,'package.json'));
+  console.log('v'+pkg.version);
+  process.exit(1);
+}
 
-if (require.main===module) {
+const fromCommandLine=(require.main===module);
+
+if (fromCommandLine) {
   main()
+
 } else {
   module.exports=parse;
+
 }
