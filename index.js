@@ -106,19 +106,15 @@ function main(){
   }
 
   return parse(stream,filter)
-    .then((list) => {
-      if (fromCommandLine){
-        if (args.usernames) {
-          list.forEach(function(user){
-            console.log(user.unix_username);
-          })
-        } else {
-          console.log(JSON.stringify(list,false,4));
-        }
-      } else {
-        return list;
-      }
-    });
+  .then((list) => {
+    if (args.usernames) {
+      list.forEach(function(user){
+        console.log(user.unix_username);
+      })
+    } else {
+      console.log(JSON.stringify(list,false,4));
+    }
+  });
 }
 
 function help() {
