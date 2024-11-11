@@ -101,7 +101,7 @@ function main(){
     filter=Function('user',args.filter);
   }
 
-  if (args._) {
+  if (args._.length) {
     stream=fs.createReadStream(args._[0]);
   }
 
